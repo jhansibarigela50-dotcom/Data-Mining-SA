@@ -7,110 +7,138 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from mlxtend.frequent_patterns import apriori, association_rules
 
-# --- 1. PAGE SETUP ---
-st.set_page_config(page_title="InsightMart | Black Friday Data Mining", layout="wide")
+# --- 1. SETTINGS & DATA LOADING ---
+st.set_page_config(page_title="InsightMart | Black Friday AI", layout="wide")
 
-# --- 2. DATA CLEANING & PREPROCESSING (STAGES 1 & 2) ---
-@st.cache_data # This keeps the app fast by only cleaning once per session
-def load_and_clean_data():
+@st.cache_data
+def load_and_clean():
     try:
-        # Load the raw file you uploaded to GitHub
         df = pd.read_csv('BlackFriday.csv')
-        
-        # Handling Missing Values (Stage 2)
+        # Stage 2: Cleaning
         df['Product_Category_2'] = df['Product_Category_2'].fillna(0)
         df['Product_Category_3'] = df['Product_Category_3'].fillna(0)
-        
-        # Encoding Categorical Data (Stage 2)
+        # Stage 2: Encoding
         le = LabelEncoder()
-        df['Gender_Num'] = le.fit_transform(df['Gender']) # Male=0, Female=1
-        
-        # Map Age to ordered numbers
+        df['Gender_Num'] = le.fit_transform(df['Gender'])
         age_map = {'0-17': 1, '18-25': 2, '26-35': 3, '36-45': 4, '46-50': 5, '51-55': 6, '55+': 7}
         df['Age_Num'] = df['Age'].map(age_map)
-        
-        # Normalize Purchase for Clustering
+        # Stage 2: Scaling
         scaler = StandardScaler()
         df['Purchase_Scaled'] = scaler.fit_transform(df[['Purchase']])
-        
         return df
-    except Exception as e:
-        st.error(f"Error loading 'BlackFriday.csv': {e}")
+    except:
         return None
 
-df = load_and_clean_data()
+df = load_and_clean()
 
-# --- 3. SIDEBAR NAVIGATION ---
+# --- 2. SIDEBAR NAVIGATION ---
 st.sidebar.title("Project Stages")
-selection = st.sidebar.radio("Go to:", 
-    ["Scope & Raw Data", "Cleaned Insights (EDA)", "Customer Clusters", "Product Associations", "Anomaly Detection"])
+page = st.sidebar.radio("Navigate to:", 
+    ["1. Project Scope", "2. Data Preprocessing", "3. Market EDA", "4. Customer Clustering", "5. Product Associations", "6. Anomaly Detection"])
 
 if df is not None:
-    # --- STAGE 1: SCOPE ---
-    if selection == "Scope & Raw Data":
-        st.title("🎯 Project Scope: Black Friday Insights")
-        st.write("Our aim is to find who buys what, how much they spend, and how their behavior changes.")
-        st.subheader("Data Preview (Raw/Cleaned)")
-        st.write(df.head(10))
-        st.info(f"Dataset contains {df.shape[0]} rows and {df.shape[1]} columns.")
+    # --- STAGE 1: PROJECT SCOPE ---
+    if page == "1. Project Scope":
+        st.title("🎯 Stage 1: Define Project Scope")
+        
+        # Using columns to organize the "Game Plan"
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Objective")
+            st.write("""
+            The aim is to analyze the Black Friday dataset to understand:
+            * **Who** buys what (Demographics).
+            * **How much** they spend (Purchase patterns).
+            * **Product associations** for better combo offers.
+            """)
+        with col2:
+            st.subheader("Target Outcomes")
+            st.success("✔️ Identify Shopping Behaviors")
+            st.success("✔️ Group Customers into Clusters")
+            st.success("✔️ Detect Unusual Big Spenders")
+
+        st.divider()
+        st.subheader("Raw Dataset Preview")
+        # Showing only the main columns to keep it organized
+        main_cols = ['User_ID', 'Product_ID', 'Gender', 'Age', 'Occupation', 'City_Category', 'Purchase']
+        st.dataframe(df[main_cols].head(10), use_container_width=True)
+
+    # --- STAGE 2: PREPROCESSING ---
+    elif page == "2. Data Preprocessing":
+        st.title("🧼 Stage 2: Data Cleaning & Preprocessing")
+        
+        st.write("To make the data ready for AI models, we performed the following:")
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Missing Values Handled", "Cat 2 & 3")
+        c2.metric("Encoding", "Gender & Age")
+        c3.metric("Normalization", "StandardScaler")
+        
+        st.subheader("Cleaned & Engineered Features")
+        st.write("This table shows the numerical transformations used for the AI models:")
+        # Organized technical view
+        tech_view = df[['User_ID', 'Gender_Num', 'Age_Num', 'Purchase_Scaled']].head(10)
+        st.dataframe(tech_view, use_container_width=True)
 
     # --- STAGE 3: EDA ---
-    elif selection == "Cleaned Insights (EDA)":
-        st.title("📊 Exploratory Data Analysis")
-        col1, col2 = st.columns(2)
+    elif page == "3. Market EDA":
+        st.title("📊 Stage 3: Exploratory Data Analysis")
         
-        with col1:
-            st.write("### Purchase by Age Group")
+        row1_col1, row1_col2 = st.columns(2)
+        with row1_col1:
+            st.write("### Purchase by Gender")
             fig, ax = plt.subplots()
-            sns.boxplot(data=df, x='Age', y='Purchase', palette='coolwarm', ax=ax)
+            sns.barplot(data=df, x='Gender', y='Purchase', ax=ax, palette='magma')
             st.pyplot(fig)
-            
-        with col2:
-            st.write("### Top Product Categories")
+        with row1_col2:
+            st.write("### Popular Categories")
             fig, ax = plt.subplots()
-            df['Product_Category_1'].value_counts().head(10).plot(kind='bar', color='teal', ax=ax)
+            df['Product_Category_1'].value_counts().head(5).plot(kind='pie', autopct='%1.1f%%', ax=ax)
             st.pyplot(fig)
 
     # --- STAGE 4: CLUSTERING ---
-    elif selection == "Customer Clusters":
-        st.title("👥 Clustering Analysis (K-Means)")
-        st.write("Grouping customers into 'Budget', 'Mid', and 'Premium' spenders.")
+    elif page == "4. Customer Clustering":
+        st.title("👥 Stage 4: Clustering Analysis")
         
-        # Clustering Logic
+        # K-Means logic
         X = df[['Age_Num', 'Purchase_Scaled']]
         kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
         df['Cluster'] = kmeans.fit_predict(X)
         
-        fig, ax = plt.subplots()
-        sns.scatterplot(data=df.sample(5000), x='Age', y='Purchase', hue='Cluster', palette='bright', ax=ax)
-        st.pyplot(fig)
-        st.success("K-Means successfully applied using the Elbow Method logic.")
-
-    # --- STAGE 5: ASSOCIATION RULES ---
-    elif selection == "Product Associations":
-        st.title("🛒 Association Rule Mining")
-        st.write("Analyzing product combinations using the **Apriori Algorithm**.")
+        # Label Clusters
+        cluster_labels = {0: "Budget Shoppers", 1: "Premium Buyers", 2: "Average Spenders"}
+        df['Segment'] = df['Cluster'].map(cluster_labels)
         
-        # Pivot data for Apriori (Sampled for speed)
-        subset = df.head(10000)
+        fig, ax = plt.subplots(figsize=(10, 5))
+        sns.scatterplot(data=df.sample(2000), x='Age', y='Purchase', hue='Segment', ax=ax)
+        st.pyplot(fig)
+
+    # --- STAGE 5: ASSOCIATIONS ---
+    elif page == "5. Product Associations":
+        st.title("🛒 Stage 5: Association Rule Mining")
+        # Logic for Apriori
+        subset = df.head(5000)
         basket = subset.groupby(['User_ID', 'Product_Category_1'])['Product_Category_1'].count().unstack().fillna(0)
         basket_sets = basket.applymap(lambda x: 1 if x > 0 else 0)
         
-        freq_items = apriori(basket_sets, min_support=0.05, use_colnames=True)
-        rules = association_rules(freq_items, metric="lift", min_threshold=1)
+        freq_itemsets = apriori(basket_sets, min_support=0.05, use_colnames=True)
+        rules = association_rules(freq_itemsets, metric="lift", min_threshold=1)
         
-        st.write("### Frequent Product Combinations")
-        st.dataframe(rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].head(10))
+        st.write("Top Product Combinations Found:")
+        st.dataframe(rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].head(10), use_container_width=True)
 
-    # --- STAGE 6: ANOMALY DETECTION ---
-    elif selection == "Anomaly Detection":
-        st.title("⚠️ Anomaly Detection")
-        st.write("Detecting unusual big spenders using **Z-Score/Statistical Limits**.")
+    # --- STAGE 6: ANOMALIES ---
+    elif page == "6. Anomaly Detection":
+        st.title("⚠️ Stage 6: Anomaly Detection")
         
-        upper_limit = df['Purchase'].mean() + (3 * df['Purchase'].std())
-        anomalies = df[df['Purchase'] > upper_limit]
+        limit = df['Purchase'].mean() + (2 * df['Purchase'].std())
+        anomalies = df[df['Purchase'] > limit]
         
-        st.metric("Anomalies Detected", len(anomalies))
-        st.write(f"Transactions above **${upper_limit:,.2f}** are flagged as unusual.")
-        st.dataframe(anomalies[['User_ID', 'Age', 'Gender', 'Purchase']].head(20))
+        st.metric("Unusual High Spenders Found", len(anomalies))
+        st.write(f"Transactions above **${limit:,.2f}** are flagged as anomalies.")
+        st.dataframe(anomalies[['User_ID', 'Age', 'Gender', 'Purchase']].head(15), use_container_width=True)
 
+# --- FOOTER ---
+st.sidebar.markdown("---")
+st.sidebar.write("**Student Name:** [Your Name]")
+st.sidebar.write("**ID:** [Your Reg Number]")
+st.sidebar.info("Course: Artificial Intelligence")
