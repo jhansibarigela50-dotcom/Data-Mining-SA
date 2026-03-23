@@ -5,7 +5,7 @@
 This project serves as a comprehensive Data Mining solution for **InsightMart Analytics**. By analyzing large-scale Black Friday retail data, we uncover hidden patterns in consumer behavior to drive strategic decision-making, optimize resource allocation, and enhance customer engagement.
 
 ## 🚀 Live Dashboard
-**View the Deployed App:** [Insert Your Streamlit Link Here]
+**View the Deployed App:** (https://data-mining-sa-cre9bvlrre9253wewf9wvb.streamlit.app/)
 
 ---
 
