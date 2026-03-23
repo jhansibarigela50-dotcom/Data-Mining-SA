@@ -136,21 +136,48 @@ if df is not None:
         with col2:
             st.write("### Segment Averages")
             st.table(df.groupby('Segment')['Purchase'].mean().reset_index())
-
-    # --- STAGE 5: ASSOCIATION RULES ---
-    elif app_mode == "5. Association Rule Mining":
+            
+# --- STAGE 5: ASSOCIATION RULES (REVISED) ---
+    elif app_mode == "5. Association Rules":
         st.title("🛒 Stage 5: Product Combination Discovery")
-        st.write("Analyzing frequently bought category pairs (Apriori Algorithm).")
         
-        # Sample for performance
-        subset = df.head(5000)
-        basket = subset.groupby(['User_ID', 'Product_Category_1'])['Product_Category_1'].count().unstack().fillna(0)
-        basket_sets = basket.applymap(lambda x: 1 if x > 0 else 0)
+        # 1. Prepare the basket (Grouping User_ID and Product_Category_1)
+        # We use a larger sample (20,000) to ensure we find patterns
+        subset = df.head(20000)
         
-        freq_itemsets = apriori(basket_sets, min_support=0.05, use_colnames=True)
-        rules = association_rules(freq_itemsets, metric="lift", min_threshold=1)
-        
-        st.dataframe(rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']].sort_values('lift', ascending=False).head(10), use_container_width=True)
+        with st.spinner("Mining associations... this may take a moment."):
+            basket = (subset.groupby(['User_ID', 'Product_Category_1'])['Product_Category_1']
+                      .count().unstack().reset_index().fillna(0)
+                      .set_index('User_ID'))
+            
+            # Convert counts to 0 or 1 (One-Hot Encoding)
+            def encode_units(x):
+                if x <= 0: return 0
+                if x >= 1: return 1
+            
+            basket_sets = basket.applymap(encode_units)
+
+            # 2. Run Apriori with a LOWER support to ensure results aren't blank
+            # If 0.05 is too high, we try 0.01
+            freq_itemsets = apriori(basket_sets, min_support=0.02, use_colnames=True)
+            
+            if not freq_itemsets.empty:
+                rules = association_rules(freq_itemsets, metric="lift", min_threshold=1)
+                
+                if not rules.empty:
+                    st.success(f"Found {len(rules)} strong product associations!")
+                    
+                    # Clean up the display (Removing frozensets for readability)
+                    rules["antecedents"] = rules["antecedents"].apply(lambda x: list(x)[0]).astype(str)
+                    rules["consequents"] = rules["consequents"].apply(lambda x: list(x)[0]).astype(str)
+                    
+                    st.dataframe(rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']]
+                                 .sort_values('lift', ascending=False).head(10), 
+                                 use_container_width=True)
+                else:
+                    st.warning("No rules met the 'Lift' threshold. Try lowering the requirements.")
+            else:
+                st.error("No frequent itemsets found. The 'min_support' might be too high for this sample.")
 
     # --- STAGE 6: ANOMALY DETECTION ---
     elif app_mode == "6. Anomaly Detection":
