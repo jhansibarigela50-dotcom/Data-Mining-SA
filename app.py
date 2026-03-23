@@ -137,8 +137,3 @@ if df is not None:
         st.write(f"Transactions above **${limit:,.2f}** are flagged as anomalies.")
         st.dataframe(anomalies[['User_ID', 'Age', 'Gender', 'Purchase']].head(15), use_container_width=True)
 
-# --- FOOTER ---
-st.sidebar.markdown("---")
-st.sidebar.write("**Student Name:** [Your Name]")
-st.sidebar.write("**ID:** [Your Reg Number]")
-st.sidebar.info("Course: Artificial Intelligence")
