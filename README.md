@@ -1,76 +1,73 @@
 # Mining the Future: Unlocking Business Intelligence with AI
 # IDAI1021000480
 
+* **Name:** Jhansi Barigela
+* **Registration Number:** IDAI1021000480
+* **Crs:** Artificial Intelligence 
+* **Course:** Data Mining
+* **School Name:** Birla Open Minds International School
+
+# 🛍️ InsightMart: Beyond Discounts
+**AI-Driven Sales Intelligence for Black Friday Operations**
+
 ## 📌 Project Overview
-This project serves as a comprehensive Data Mining solution for **InsightMart Analytics**. By analyzing large-scale Black Friday retail data, I uncovered hidden patterns in consumer behavior to drive strategic decision-making, optimize resource allocation, and enhance customer engagement.
+This project addresses the **"Beyond Discounts"** scenario for InsightMart. Rather than relying on blanket price cuts, this application uses **Machine Learning** and **Data Mining** to uncover high-value customer segments, product affinities, and purchase anomalies.
 
-## 🚀 Live Dashboard
-**Link to access app:** (https://data-mining-sa-cre9bvlrre9253wewf9wvb.streamlit.app/)
-
----
-
-## 🛠️ Project Stages & Methodology
-
-### 1. Project Scope (Stage 1)
-The primary objective is to move "Beyond Discounts" by identifying:
-* Key shopping behaviors across demographics.
-* Distinct customer segments for tailored marketing.
-* High-value cross-selling opportunities.
-* Anomalous transactions for VIP or fraud detection.
-
-<img width="2014" height="916" alt="image" src="https://github.com/user-attachments/assets/38d1883a-e623-41ff-89ed-216c2008dad9" />
-
-
-### 2. Data Preprocessing (Stage 2)
-Raw data was prepared for AI modeling through:
-* **Cleaning:** Handled missing values in `Product_Category_2` and `Product_Category_3`.
-* **Encoding:** Converted categorical `Gender` and `Age` into numerical formats for machine learning compatibility.
-* **Normalization:** Applied `StandardScaler` to `Purchase` amounts to ensure feature parity during clustering.
-
-<img width="1990" height="884" alt="image" src="https://github.com/user-attachments/assets/4fa4f5fe-1891-4de0-818a-b455a1fb2bd9" />
-
-### 3. Exploratory Data Analysis (Stage 3)
-Visualized trends using:
-* **Bar Charts:** To identify the most popular product categories.
-* **Box Plots:** To compare spending distributions across Genders and Age groups.
-
-<img width="1994" height="1072" alt="image" src="https://github.com/user-attachments/assets/6a660760-17ad-46a6-a588-831fbf8111ae" />
-
-<img width="2050" height="854" alt="image" src="https://github.com/user-attachments/assets/1380532e-e9c7-4433-8995-bff742d4600e" />
-
-### 4. Clustering Analysis (Stage 4)
-Applied the **K-Means Algorithm** to segment customers based on Age and Spending habits. I used the **Elbow Method** logic to determine the optimal number of clusters, resulting in three distinct groups: *Budget Shoppers*, *Average Spenders*, and *Premium Buyers*.
-
-<img width="2072" height="818" alt="image" src="https://github.com/user-attachments/assets/39f05f91-0089-48eb-adba-ae9ad3129501" />
-
-
-### 5. Association Rule Mining (Stage 5)
-Leveraged the **Apriori Algorithm** to discover frequent product combinations. By analyzing `support`, `confidence`, and `lift`, I identified categories often purchased together (e.g., Category 1 and Category 5), providing clear cross-selling insights.
-
-
-
-### 6. Anomaly Detection (Stage 6)
-Utilized statistical methods (**IQR/Z-Score**) to detect "Whales"—customers with exceptionally high purchase volumes. This helps retailers identify VIP customers or potential bulk-purchase anomalies.
+## 🚀 Live Application
+(https://data-mining-sa-cre9bvlrre9253wewf9wvb.streamlit.app/)
 
 ---
 
-## 🖥️ App Functionality
-The Streamlit dashboard is organized into interactive sections:
-* **Sidebar Navigation:** Easy access to each project stage.
-* **Interactive Data Tables:** Cleaned, scannable views of the dataset without horizontal scrolling.
-* **Live AI Models:** Real-time generation of clusters and association rules.
-* **Strategic Reporting:** Actionable business recommendations based on findings.
+## 🛠️ Data Pipeline & AI Methodology
+
+### 1. Data Preprocessing (Stage 2)
+To ensure model accuracy, the raw dataset underwent rigorous cleaning:
+* **Null Handling:** Imputed missing values in `Product_Category_2` and `Product_Category_3`.
+* **Feature Engineering:** Created `Gender_Num` (Label Encoding) and `Age_Num` (Ordinal Mapping).
+* **Scaling:** Applied `StandardScaler` (Z-score normalization) to the `Purchase` feature to prevent high-magnitude outliers from biasing the clustering algorithm.
+
+<img width="2008" height="890" alt="image" src="https://github.com/user-attachments/assets/5a89a9ec-9224-4ebd-8abe-59208cc902b3" />
+
+
+### 2. Market Exploratory Analysis (Stage 3)
+We utilized **Seaborn** and **Matplotlib** to visualize spending distribution. Key findings include:
+* The **26-35 age demographic** represents the highest total revenue.
+* **Category 1** serves as the primary "Anchor Category" for the store.
+
+<img width="1998" height="906" alt="image" src="https://github.com/user-attachments/assets/792b6c03-130f-4567-8d3c-1b22624752b3" />
+
+### 3. Customer Segmentation (Stage 4)
+We implemented the **K-Means Clustering** algorithm:
+* **Algorithm:** K-Means with $k=3$ (determined via Elbow Method).
+* **Segments:** Budget Shoppers, Occasional Buyers, and Premium Buyers.
+* **Goal:** To move "Occasional" buyers into the "Premium" tier via personalized incentives.
+
+<img width="2078" height="836" alt="image" src="https://github.com/user-attachments/assets/350a1569-86fc-4ffa-b264-5c7d41effa07" />
+
+### 4. Market Basket Analysis (Stage 5)
+Using the **Apriori Algorithm**, we identified frequent itemsets and association rules:
+* **Metric:** Focused on **Lift** and **Confidence** to find non-obvious product pairings.
+* **Application:** Informs shelf-placement and digital "Frequently Bought Together" bundles.
+
+<img width="2052" height="1036" alt="image" src="https://github.com/user-attachments/assets/ea98f62d-9558-44cc-b176-e806dfe7a828" />
+
+### 5. Anomaly Detection (Stage 6)
+Applied statistical **Outlier Detection** (IQR and Standard Deviation methods) to identify "Whale" spenders. These transactions are flagged for VIP loyalty conversion or fraud prevention.
+
+<img width="1994" height="998" alt="image" src="https://github.com/user-attachments/assets/80463cc6-b4f5-4628-990c-bb1f80ff0590" />
+
+---
+
+## 💡 Strategic Insights & Analysis
+The application provides an automated **Executive Summary** in Stage 7, offering:
+* **Inventory Recommendations:** Based on association lift.
+* **Marketing Focus:** Weighted toward the dominant 26-35 male demographic.
+* **Margin Optimization:** Shifting from a discount-heavy model to a precision-marketing model.
 
 ## 📂 Repository Structure
-* `app.py`: Main application script containing the UI and AI logic.
-* `requirements.txt`: List of Python dependencies (Streamlit, Scikit-Learn, etc.).
+* `app.py`: The main Streamlit application containing the UI and AI logic.
+* `requirements.txt`: Environment dependencies (Pandas 3.0 compatible).
 * `BlackFriday.csv`: The source dataset.
 * `README.md`: Project documentation.
 
----
 
-## 👥 Project Details
-* **Course:** Artificial Intelligence
-* **Assessment:** Summative Assessment (60 Marks)
-* **Student:** [Your Name]
-* **Registration Number:** [Your Number]
