@@ -2,7 +2,7 @@
 # IDAI1021000480
 
 ## 📌 Project Overview
-This project serves as a comprehensive Data Mining solution for **InsightMart Analytics**. By analyzing large-scale Black Friday retail data, we uncover hidden patterns in consumer behavior to drive strategic decision-making, optimize resource allocation, and enhance customer engagement.
+This project serves as a comprehensive Data Mining solution for **InsightMart Analytics**. By analyzing large-scale Black Friday retail data, I uncovered hidden patterns in consumer behavior to drive strategic decision-making, optimize resource allocation, and enhance customer engagement.
 
 ## 🚀 Live Dashboard
 **Link to access app:** (https://data-mining-sa-cre9bvlrre9253wewf9wvb.streamlit.app/)
@@ -39,10 +39,15 @@ Visualized trends using:
 <img width="2050" height="854" alt="image" src="https://github.com/user-attachments/assets/1380532e-e9c7-4433-8995-bff742d4600e" />
 
 ### 4. Clustering Analysis (Stage 4)
-Applied the **K-Means Algorithm** to segment customers based on Age and Spending habits. We used the **Elbow Method** logic to determine the optimal number of clusters, resulting in three distinct groups: *Budget Shoppers*, *Average Spenders*, and *Premium Buyers*.
+Applied the **K-Means Algorithm** to segment customers based on Age and Spending habits. I used the **Elbow Method** logic to determine the optimal number of clusters, resulting in three distinct groups: *Budget Shoppers*, *Average Spenders*, and *Premium Buyers*.
+
+<img width="2072" height="818" alt="image" src="https://github.com/user-attachments/assets/39f05f91-0089-48eb-adba-ae9ad3129501" />
+
 
 ### 5. Association Rule Mining (Stage 5)
-Leveraged the **Apriori Algorithm** to discover frequent product combinations. By analyzing `support`, `confidence`, and `lift`, we identified categories often purchased together (e.g., Category 1 and Category 5), providing clear cross-selling insights.
+Leveraged the **Apriori Algorithm** to discover frequent product combinations. By analyzing `support`, `confidence`, and `lift`, I identified categories often purchased together (e.g., Category 1 and Category 5), providing clear cross-selling insights.
+
+
 
 ### 6. Anomaly Detection (Stage 6)
 Utilized statistical methods (**IQR/Z-Score**) to detect "Whales"—customers with exceptionally high purchase volumes. This helps retailers identify VIP customers or potential bulk-purchase anomalies.
