@@ -1,5 +1,5 @@
 # Mining the Future: Unlocking Business Intelligence with AI
-**Scenario 1: Beyond Discounts – Data-Driven Black Friday Sales Insights**
+# IDAI1021000480
 
 ## 📌 Project Overview
 This project serves as a comprehensive Data Mining solution for **InsightMart Analytics**. By analyzing large-scale Black Friday retail data, we uncover hidden patterns in consumer behavior to drive strategic decision-making, optimize resource allocation, and enhance customer engagement.
@@ -18,16 +18,25 @@ The primary objective is to move "Beyond Discounts" by identifying:
 * High-value cross-selling opportunities.
 * Anomalous transactions for VIP or fraud detection.
 
+<img width="2014" height="916" alt="image" src="https://github.com/user-attachments/assets/38d1883a-e623-41ff-89ed-216c2008dad9" />
+
+
 ### 2. Data Preprocessing (Stage 2)
 Raw data was prepared for AI modeling through:
 * **Cleaning:** Handled missing values in `Product_Category_2` and `Product_Category_3`.
 * **Encoding:** Converted categorical `Gender` and `Age` into numerical formats for machine learning compatibility.
 * **Normalization:** Applied `StandardScaler` to `Purchase` amounts to ensure feature parity during clustering.
 
+<img width="1990" height="884" alt="image" src="https://github.com/user-attachments/assets/4fa4f5fe-1891-4de0-818a-b455a1fb2bd9" />
+
 ### 3. Exploratory Data Analysis (Stage 3)
 Visualized trends using:
 * **Bar Charts:** To identify the most popular product categories.
 * **Box Plots:** To compare spending distributions across Genders and Age groups.
+
+<img width="1994" height="1072" alt="image" src="https://github.com/user-attachments/assets/6a660760-17ad-46a6-a588-831fbf8111ae" />
+
+<img width="2050" height="854" alt="image" src="https://github.com/user-attachments/assets/1380532e-e9c7-4433-8995-bff742d4600e" />
 
 ### 4. Clustering Analysis (Stage 4)
 Applied the **K-Means Algorithm** to segment customers based on Age and Spending habits. We used the **Elbow Method** logic to determine the optimal number of clusters, resulting in three distinct groups: *Budget Shoppers*, *Average Spenders*, and *Premium Buyers*.
