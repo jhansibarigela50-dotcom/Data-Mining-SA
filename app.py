@@ -153,9 +153,3 @@ if df is not None:
         """)
         
         st.success("**Recommendation:** Focus marketing spend on Age 26-35 and use 'Frequently Bought Together' prompts for Category 1 items.")
-
-# --- FOOTER (Stage 8) ---
-st.sidebar.markdown("---")
-st.sidebar.write("**Student:** [Your Name]")
-st.sidebar.write("**ID:** [Your Reg Number]")
-st.sidebar.caption("AI Summative Assessment 2026")
